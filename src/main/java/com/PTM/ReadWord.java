@@ -1,10 +1,9 @@
 package com.PTM;
 
+import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
-import org.apache.poi.xwpf.usermodel.IBodyElement;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.poi.xwpf.usermodel.*;
 import org.junit.jupiter.api.Test;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 
@@ -73,14 +72,39 @@ public class ReadWord {
 //                }
 //            }
 //        }
+        //read each cell per row
         XWPFDocument doc = new XWPFDocument(fis);
         List<XWPFTable>  tables = doc.getTables();
+
         for ( XWPFTable table : tables )
         {
             for ( XWPFTableRow row : table.getRows() )
             {
                 System.out.println(row.getCell(1).getText());
+
+                for (XWPFTableCell cell : row.getTableCells()) {
+                    System.out.println(cell.getText());
+                    String sFieldValue = cell.getText();
+                    if (sFieldValue.matches("Whatever you want to match with the string") || sFieldValue.matches("Approved")) {
+                        System.out.println("The match as per the Document is True");
+                    }
+                }
+                System.out.println(" ");
             }
         }
+        //HWPFDocument
+//        HWPFDocument doc = new HWPFDocument(new FileInputStream("TC602 Vol 22.docx"));
+//        System.out.println(doc.getText());
+//
+//        System.out.println("Process Completed Successfully");
     }
+
+//    @Test
+//    public void searchText() throws IOException {
+//
+//        FileInputStream input_document = new FileInputStream(new File("test_document.doc"));
+//        /* Create Word Extractor object to extract content of word document*/
+//        WordExtractor my_word = new WordExtractor(input_document);
+//
+//    }
 }
