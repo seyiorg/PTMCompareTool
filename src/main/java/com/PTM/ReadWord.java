@@ -2,9 +2,11 @@ package com.PTM;
 
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.*;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 
 import java.io.*;
@@ -52,7 +54,7 @@ public class ReadWord {
 
     //Read table cell
     @Test
-    public void readDocxTable() throws IOException {
+    public void readDocxTable() throws IOException, InvalidFormatException {
 
         FileInputStream fis = new FileInputStream("TC602 Vol 22.docx");
 //        XWPFDocument xdoc=new XWPFDocument(new FileInputStream("createdocument.docx"));
@@ -72,26 +74,81 @@ public class ReadWord {
 //                }
 //            }
 //        }
-        //read each cell per row
-        XWPFDocument doc = new XWPFDocument(fis);
-        List<XWPFTable>  tables = doc.getTables();
+//===========================================================================================================//read each cell per row
+//        XWPFDocument doc = new XWPFDocument(fis);
+//        List<XWPFTable>  tables = doc.getTables();
+//
+//        for ( XWPFTable table : tables )
+//        {
+//            for ( XWPFTableRow row : table.getRows() )
+//            {
+////                System.out.println(row.getCell(1).getText());
+//                System.out.println("A row");
+//
+//                for (XWPFTableCell cell : row.getTableCells()) {
+//                    System.out.println("=============================== ");
+//                    System.out.println("cell data is: "+cell.getText());
+////                    String sFieldValue = cell.getText();
+////                    if (sFieldValue.matches("Whatever you want to match with the string") || sFieldValue.matches("Approved")) {
+////                        System.out.println("The match as per the Document is True");
+////                    }
+//                }
+//                System.out.println(" ");
+//            }
+//        }
+//===========================================================================================================
+//        XWPFDocument doc = new XWPFDocument(fis);
+//        List<XWPFParagraph> paragraphs = doc.getParagraphs();
+//
+//        for (XWPFParagraph p : paragraphs) {
+//            if (p.getText().contains("Variable data")) {
+//                System.out.println("=============================== ");
+////                System.out.println(p.);
+//
+//            }
+//            else break;
+//        }
+//===========================================================================================================
+//        XWPFDocument doc = new XWPFDocument(fis);
+//        Iterator<IBodyElement> iter = doc.getBodyElementsIterator();
+//        while (iter.hasNext()) {
+//            IBodyElement elem = iter.next();
+//            if (elem instanceof XWPFParagraph) {
+//                if (((XWPFParagraph)elem).getText().contains("Variable data"));
+//                {
+////                    if (elem instanceof XWPFTable){
+//                        System.out.println(((XWPFTable) elem).getText());
+//
+////                    }
+//                }
+//            }
+//            else if (elem instanceof XWPFTable) {
+////                System.out.println(((XWPFTable) elem).getText());
+//            }
 
-        for ( XWPFTable table : tables )
-        {
-            for ( XWPFTableRow row : table.getRows() )
-            {
-                System.out.println(row.getCell(1).getText());
 
-                for (XWPFTableCell cell : row.getTableCells()) {
-                    System.out.println(cell.getText());
-                    String sFieldValue = cell.getText();
-                    if (sFieldValue.matches("Whatever you want to match with the string") || sFieldValue.matches("Approved")) {
-                        System.out.println("The match as per the Document is True");
-                    }
-                }
-                System.out.println(" ");
+        XWPFDocument doc = new XWPFDocument(OPCPackage.open(fis));
+        Iterator<IBodyElement> bodyElementIterator = doc.getBodyElementsIterator();
+        while (bodyElementIterator.hasNext()) {
+            IBodyElement element = bodyElementIterator.next();
+//System.out.println("++++++++++++ "+element.getElementType().name());
+            if ("TABLE".equalsIgnoreCase(element.getElementType().name())) {
+                List <XWPFTable> tableList = element.getBody().getTables();
+                //System.out.println("++++++++++++ "+element.getElementType().name());
+//                for (XWPFTable table : tableList) {
+//
+//                    System.out.println("Total Number of Rows of Table:" + table.getNumberOfRows());
+//                    for (int i = 0; i < table.getRows().size(); i++) {
+//
+//                        for (int j = 0; j < table.getRow(i).getTableCells().size(); j++) {
+//                            System.out.println(table.getRow(i).getCell(j).getText());
+//                        }
+//                    }
+//                }
             }
         }
+        }
+//===========================================================================================================
         //HWPFDocument
 //        HWPFDocument doc = new HWPFDocument(new FileInputStream("TC602 Vol 22.docx"));
 //        System.out.println(doc.getText());
@@ -107,4 +164,4 @@ public class ReadWord {
 //        WordExtractor my_word = new WordExtractor(input_document);
 //
 //    }
-}
+
