@@ -130,11 +130,35 @@ public class ReadWord {
         XWPFDocument doc = new XWPFDocument(OPCPackage.open(fis));
         Iterator<IBodyElement> bodyElementIterator = doc.getBodyElementsIterator();
         while (bodyElementIterator.hasNext()) {
+
             IBodyElement element = bodyElementIterator.next();
 //System.out.println("++++++++++++ "+element.getElementType().name());
             if ("TABLE".equalsIgnoreCase(element.getElementType().name())) {
-                List <XWPFTable> tableList = element.getBody().getTables();
-                //System.out.println("++++++++++++ "+element.getElementType().name());
+                List <XWPFTable> tables = element.getBody().getTables();
+
+                for ( XWPFTable table : tables )
+        {
+            for ( XWPFTableRow row : table.getRows() )
+            {
+                if (row.getCell(0).getText() == "Version"){
+                    break;
+                }
+                System.out.println(row.getCell(1).getText());
+//                System.out.println(row.getCell(1).getText());
+
+                for (XWPFTableCell cell : row.getTableCells()) {
+//                    System.out.println("=============================== ");
+//                    System.out.println("cell data is: "+cell.getText());
+//                    String sFieldValue = cell.getText();
+//                    if (sFieldValue.matches("Whatever you want to match with the string") || sFieldValue.matches("Approved")) {
+//                        System.out.println("The match as per the Document is True");
+//                    }
+                }
+//                System.out.println(" ");
+            }
+        }
+
+
 //                for (XWPFTable table : tableList) {
 //
 //                    System.out.println("Total Number of Rows of Table:" + table.getNumberOfRows());
