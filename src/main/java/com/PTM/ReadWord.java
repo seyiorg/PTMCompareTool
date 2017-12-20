@@ -74,6 +74,29 @@ public class ReadWord {
 //                }
 //            }
 //        }
+        //===========================================================================================================//read each cell per row
+
+        //        Iterator<IBodyElement> bodyElementIterator = doc.getBodyElementsIterator();
+//
+//        while (bodyElementIterator.hasNext()) {
+//
+//            IBodyElement element = bodyElementIterator.next();
+//
+//            if ("TABLE".equalsIgnoreCase(element.getElementType().name())) {
+//                List<XWPFTable> tables = element.getBody().getTables();
+//
+//                for (XWPFTable table : tables) {
+//
+//                    System.out.println(table.getText());
+//
+//                    if (table.getRow(0).getCell(0).getText().equals("Tag")) {
+//                        System.out.println("============================================================================================");
+//                        System.out.println(table.getText());
+//                        System.out.println("============================================================================================");
+//                    }
+//                }
+//            }
+//        }
 //===========================================================================================================//read each cell per row
 //        XWPFDocument doc = new XWPFDocument(fis);
 //        List<XWPFTable>  tables = doc.getTables();
